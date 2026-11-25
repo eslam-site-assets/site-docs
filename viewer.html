@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ID Fundamentals Redesign v2</title>
+<style>html,body{margin:0;background:#525659}#p{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0}canvas{max-width:100%;height:auto!important;box-shadow:0 2px 8px #0008;background:#fff}#m{color:#fff;font:14px sans-serif;text-align:center;padding:30px}</style>
+</head><body><div id="m">Loading...</div><div id="p"></div>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>
+(async()=>{
+try{
+const W="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob(['importScripts("'+W+'");'],{type:"text/javascript"}));
+const pdf=await pdfjsLib.getDocument("ID-Fundamentals-Redesign-v2.pdf").promise;
+const box=document.getElementById("p");
+const w=Math.min(document.documentElement.clientWidth-16,1000), dpr=Math.min(window.devicePixelRatio||1,2);
+for(let i=1;i<=pdf.numPages;i++){
+ const pg=await pdf.getPage(i);const v0=pg.getViewport({scale:1});const s=w/v0.width;
+ const v=pg.getViewport({scale:s*dpr});
+ const c=document.createElement("canvas");c.width=v.width;c.height=v.height;c.style.width=(v.width/dpr)+"px";
+ box.appendChild(c);if(i==1)document.getElementById("m").remove();
+ await pg.render({canvasContext:c.getContext("2d"),viewport:v}).promise;
+}
+}catch(e){document.getElementById("m").textContent="Could not load: "+e.message}
+})();
+</script></body></html>
