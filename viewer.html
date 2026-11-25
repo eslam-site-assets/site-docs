@@ -9,7 +9,7 @@
 try{
 const W="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
 pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob(['importScripts("'+W+'");'],{type:"text/javascript"}));
-const pdf=await pdfjsLib.getDocument("ID-Fundamentals-Redesign-v2.pdf").promise;
+const pdf=await pdfjsLib.getDocument(((q)=>/^[A-Za-z0-9._-]+\.pdf$/.test(q||"")?q:"ID-Fundamentals-Redesign-v2.pdf")(new URLSearchParams(location.search).get("file"))).promise;
 const box=document.getElementById("p");
 const w=Math.min(document.documentElement.clientWidth-16,1000), dpr=Math.min(window.devicePixelRatio||1,2);
 for(let i=1;i<=pdf.numPages;i++){
